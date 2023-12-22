@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { users } from '../../../user';
+import AddUser from './AddUser';
 
 const User = () => {
     const [name, setname] = useState("");
@@ -7,6 +8,7 @@ const User = () => {
     const [count, setcount] = useState(0);
     const [value, setvalue] = useState(null);
     const [userData, setuserData] = useState(users);
+    const [show, setshow] = useState(false);
 
     const changeName = () => {
         setname("tejas")
@@ -29,8 +31,17 @@ const User = () => {
         // setuserData(arr);
     }
 
+
+    const adduser = (e, inputs) => {
+        e.preventDefault();
+        console.log(inputs)
+        const newuserdata = [...userData, { ...inputs, id:userData[userData.length-1].id+1  }];
+        setuserData(newuserdata)
+        setshow(false)
+    }
+
     return (
-        <div>
+        <div className='container'>
             {/* <h1>{`${name} ${surname}`}</h1>
             <button onClick={changeName}>change Name</button> */}
             {/* <input type="number" onChange={(e) => setvalue(+e.target.value)} value={value} />
@@ -44,6 +55,7 @@ const User = () => {
                 {count}
                 <div className="btn btn-sm btn-danger" onClick={() => setcount(count - value)}>-</div>
             </center> */}
+            <button className='btn btn-sm btn-primary' onClick={() => setshow(true)}>Add User</button>
             {userData.length > 0 ?
                 <table className="table">
                     <thead>
@@ -74,6 +86,7 @@ const User = () => {
                 </table> :
                 <h1 className='text-center'>There is no data found</h1>
             }
+            <AddUser show={show} setshow={setshow} adduser={adduser} />
         </div>
     )
 }
